@@ -1,0 +1,34 @@
+Options +FollowSymLinks
+Options -Indexes
+RewriteEngine on
+
+#RewriteRule user/(.*)/ user.php/$1
+#RewriteRule forum/thread/(.*) /forum/thread.php/$1
+
+ErrorDocument 404 /404.php
+ErrorDocument 403 /403.php
+ErrorDocument 502 /502.php
+ErrorDocument 507 /507.php
+
+#redirect to www.
+RewriteCond %{HTTP_HOST} ^localhost$ [NC]
+RewriteRule (.*) http://web.localhost/$1 [R=301,L] 
+
+# Hide .php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [NC,L]
+RewriteCond %{THE_REQUEST} "^[^ ]* .*?\.php[? ].*$"
+RewriteRule .* - [L,R=404]
+
+order deny,allow
+# Bans
+
+# why do you have so many luke 
+Options +ExecCGI
+AddHandler cgi-script .py
+
+#########nodejs
+Action     cgi-node     /cgi-bin/cgi-node.js 
+AddHandler cgi-node     .jscript
+############
